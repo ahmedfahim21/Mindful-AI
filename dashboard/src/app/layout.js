@@ -5,7 +5,7 @@ const roboto = Roboto({weight: '400', subsets: ['cyrillic']})
 
 export const metadata = {
   title: 'Mindful AI',
-  description: '',
+  description: 'Nurturing Mental Wellness with Technology',
 }
 
 export default function RootLayout({ children }) {
