@@ -1,7 +1,7 @@
 import { Roboto } from 'next/font/google'
 import './globals.css'
 
-const roboto = Roboto({ subsets: ['latin'], weight: '400' })
+const roboto = Roboto({weight: '400', subsets: ['cyrillic']})
 
 export const metadata = {
   title: 'Mindful AI',

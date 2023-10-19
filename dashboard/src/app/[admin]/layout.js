@@ -1,5 +1,5 @@
 import Navbar from "../../components/navbar"
-import Sidepane from "../../components/sidepane "
+import Sidepane from "../../components/sidepane"
 
 
 export default function DashboardLayout({ children }) {

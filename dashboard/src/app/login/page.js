@@ -6,12 +6,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app, db } from '@/firebase/config';
 import { doc, setDoc } from 'firebase/firestore';
 
 
-function Register() {
+function Login() {
     const [isLoading, setIsLoading] = useState(false)
 
     const auth = getAuth(app);
@@ -28,7 +28,7 @@ function Register() {
         //check if passwords match. If they do, create user in Firebase
         // and redirect to your logged in page.
 
-        createUserWithEmailAndPassword(auth, email, passwordOne)
+        signInWithEmailAndPassword(auth, email, passwordOne)
             .then(async (authUser) => {
 
                 const admin = {
