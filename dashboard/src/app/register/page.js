@@ -41,7 +41,7 @@ function Register() {
                 const adminInsert = await setDoc(doc(db, 'admin', authUser.user.uid), admin)
                 console.log(adminInsert)
 
-                router.push(`/dashboard/${authUser.user.uid}`)
+                router.push(`/${authUser.user.uid}`)
 
             })
 
