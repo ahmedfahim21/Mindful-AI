@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import StudentTable from '@/components/studentTable'
+import { Skeleton } from "@/components/ui/skeleton"
 
 const Dashboard = () => {
 
@@ -64,6 +65,16 @@ const Dashboard = () => {
           <div className="absolute z-10 right-10 top-32 w-3/4 h-5/6 bg-white rounded-3xl p-5">
             {fetching &&
                 <StudentTable data={students} />
+            }
+            {!fetching &&
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div> 
+
             }
             </div>
             <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
