@@ -15,9 +15,8 @@ function Login() {
     const [isLoading, setIsLoading] = useState(false)
 
     const auth = getAuth(app);
-    const [email, setEmail] = useState("tes1t@test.com");
-    const [name, setName] = useState("test");
-    const [passwordOne, setPasswordOne] = useState("test123");
+    const [email, setEmail] = useState("");
+    const [passwordOne, setPasswordOne] = useState("");
     const router = useRouter();
     const [error, setError] = useState(null);
 
@@ -30,6 +29,7 @@ function Login() {
 
         signInWithEmailAndPassword(auth, email, passwordOne)
             .then((authUser) => {
+                localStorage.setItem('admin', authUser.user.uid)
                 router.push(`/${authUser.user.uid}`)
             })
 
