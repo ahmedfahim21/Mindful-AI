@@ -1,45 +1,47 @@
 'use client'
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import { doc, getDoc } from "firebase/firestore"
+import { collection, doc, getDoc } from "firebase/firestore"
 import { db } from "@/firebase/config"
 
-function Student() {
 
-    const studentId = useParams()
-    console.log(studentId)
-    const [student, setStudent] = useState([])
-    
+export default function Student() {
 
-    useEffect(() => {
-        const read = async () => {
-          if(done){
-          const docRef = doc(db, "students", studentId.student);
-          console.log(studentId.student)
-          const docSnap = await getDoc(docRef);
-    
-          if (docSnap.exists()) {
-            await setStudent(docSnap.data())
-            console.log(student)
-    
-          } else {
-            console.log("No such document!");
-          }
-        }
+  const { student } = useParams()
+  // console.log(student)
+
+  const [studentData, setStudentData] = useState(null)
+
+  const studentRef = doc(db, "students", student)
+  // console.log(studentRef)
+
+  const getStudent = async () => {
+    const studentDoc = await getDoc(studentRef)
+    console.log(studentDoc.data())
+    setStudentData(studentDoc.data())
+  }
+
+  useEffect(() => {
+    getStudent()
+  }, [])
+
+
+  return(
+
+    <div className="data">
+      {
+        studentData ? (
+          <div>
+            <h1>{studentData.name}</h1>
+          
+          </div>
+        ) : (
+          <h1>Loading...</h1>
+        )
       }
-      read()
-      }, [])
-
-
-  return (
-    <main className="flex flex-col items-center justify-between p-5 overflow-y-hidden">
-    <div className="flex flex-col items-center justify-center w-full h-full">
-      <div className="absolute z-10 right-10 top-32 w-3/4 h-5/6 bg-white rounded-3xl p-5">
-        page
     </div>
-    </div>
-    </main>
+
   )
-}
 
-export default Student
+
+}
