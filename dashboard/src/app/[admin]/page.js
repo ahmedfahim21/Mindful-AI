@@ -27,6 +27,7 @@ const Dashboard = () => {
 
       if (docSnap.exists()) {
         await setAdmin(docSnap.data().name)
+        console.log(admin)
         const q = query(collection(db, "students"), where("institute", "==", admin));
         const querySnapshot = await getDocs(q);
         console.log(querySnapshot)

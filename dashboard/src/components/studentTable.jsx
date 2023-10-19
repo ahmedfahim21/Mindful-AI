@@ -9,17 +9,15 @@ import {
   } from "@/components/ui/table"
 import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 
 function StudentTable({data}) {
 
-    // const router = useRouter()
-
-    // const viewHandler = (sid) => {
-    //     router.push(`/${sid}`)
-    // }
-
-
+    const router = useRouter()
+    const viewHandler = (sid) => {
+        router.push(`/student/${sid}`)
+    }
 
 
     return (
@@ -42,7 +40,7 @@ function StudentTable({data}) {
                 <TableCell>{data.dept}</TableCell>
                 <TableCell>{data.institute}</TableCell>
                 <TableCell>{data.dob}</TableCell>
-                <TableCell className="text-right"><Button >VIEW</Button></TableCell>
+                <TableCell className="text-right"><Button onClick={() => viewHandler(data.uid)}>View</Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
