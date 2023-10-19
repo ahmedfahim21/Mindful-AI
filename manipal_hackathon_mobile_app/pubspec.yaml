@@ -28,11 +28,16 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
+  dropdown_button2: ^2.3.9
   easy_splash_screen: ^1.0.4
+  firebase_auth: ^4.11.1
+  firebase_core: ^2.19.0
   flutter:
     sdk: flutter
-  loading_indicator: ^3.1.1
+  syncfusion_flutter_core: ^23.1.41
+  syncfusion_flutter_sliders: ^23.1.41
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -48,9 +53,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1019118775745",
+    "project_id": "mindful-ai-e0364",
+    "storage_bucket": "mindful-ai-e0364.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019118775745:android:73a54931c5a3b11e55d340",
+        "android_client_info": {
+          "package_name": "com.example.manipal_hackathon_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzOg8NcwsJz8plyxRhspGrEOFeZp9TwJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019118775745:android:26abb3f748b6bc7c55d340",
+        "android_client_info": {
+          "package_name": "com.manipalhackathon.mindfulai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzOg8NcwsJz8plyxRhspGrEOFeZp9TwJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
