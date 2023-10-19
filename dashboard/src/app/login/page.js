@@ -29,20 +29,8 @@ function Login() {
         // and redirect to your logged in page.
 
         signInWithEmailAndPassword(auth, email, passwordOne)
-            .then(async (authUser) => {
-
-                const admin = {
-                    email: authUser.user.email,
-                    uid: authUser.user.uid,
-                    name: name,
-                }
-
-                //add the user to your own firebase database at 'admin'
-                const adminInsert = await setDoc(doc(db, 'admin', authUser.user.uid), admin)
-                console.log(adminInsert)
-
-                router.push(`/dashboard/${authUser.user.uid}`)
-
+            .then((authUser) => {
+                router.push(`/${authUser.user.uid}`)
             })
 
             .catch(error => {
@@ -56,25 +44,9 @@ function Login() {
         <div className="flex">
             <img src="ScreenBg.png" className=" h-screen object-cover" />
             <div className="flex flex-col justify-center items-center w-full">
-                <h1 className="text-4xl font-bold my-[80px]">Register Institution</h1>
+                <h1 className="text-4xl font-bold my-[80px]">Login Institution</h1>
                 <form className="flex flex-col items-center justify-center">
                     <div className="grid gap-8">
-                        <div className="grid gap-2">
-                            <Label className="font-thin" htmlFor="insti">
-                                Institution Name*
-                            </Label>
-                            <Input
-                                onChange={event => setName(event.target.value)}
-                                value={name}
-                                id="insti"
-                                className="w-[500px]"
-                                placeholder="Enter Institution Name"
-                                type="text"
-                                autoCapitalize="none"
-                                autoCorrect="off"
-                                disabled={isLoading}
-                            />
-                        </div>
                         <div className="grid gap-2">
                             <Label className="font-thin" htmlFor="email">
                                 Email Address*
@@ -108,22 +80,6 @@ function Login() {
                                 disabled={isLoading}
                             />
                         </div>
-                        <div className="items-top flex space-x-2">
-                            <Checkbox id="terms1" />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="terms1"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Accept terms and conditions
-                                </label>
-                                <p className="text-sm text-muted-foreground">
-                                    You agree to our Terms of Service and Privacy Policy.
-                                </p>
-                            </div>
-                        </div>
-
-
                         <Button
                             onClick={onSubmit}
                             className="font-bold">
@@ -133,6 +89,11 @@ function Login() {
                             SIGN IN
                         </Button>
                     </div>
+                    
+                    <div className="error">
+                        {error && <p>{error}</p>}
+                    </div>
+
                 </form>
 
 
@@ -141,4 +102,4 @@ function Login() {
     )
 }
 
-export default Register
+export default Login
