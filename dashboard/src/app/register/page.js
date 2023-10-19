@@ -40,7 +40,7 @@ function Register() {
                 //add the user to your own firebase database at 'admin'
                 const adminInsert = await setDoc(doc(db, 'admin', authUser.user.uid), admin)
                 console.log(adminInsert)
-
+                localStorage.setItem('admin', authUser.user.uid)
                 router.push(`/${authUser.user.uid}`)
 
             })

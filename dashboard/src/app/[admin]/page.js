@@ -66,7 +66,7 @@ const Dashboard = () => {
                 <StudentTable data={students} />
             }
             </div>
-            <img src='Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
+            <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
         </div>
     </main>
   )
