@@ -1,8 +1,16 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:manipal_hackathon_mobile_app/pages/homepage.dart';
+import 'package:manipal_hackathon_mobile_app/pages/home_page.dart';
+import 'package:manipal_hackathon_mobile_app/pages/login_page.dart';
+import 'package:manipal_hackathon_mobile_app/utils/colours.dart';
+import 'firebase_options.dart';
+import 'pages/registration_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MindFulAIApp());
 }
 
@@ -12,36 +20,61 @@ class MindFulAIApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const SplashScreenPage(),
-    );
+        title: 'MindFul AI',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: backgroundColour.withOpacity(0.6)),
+          useMaterial3: true,
+        ),
+        home: const SplashScreenPage());
   }
 }
 
 class SplashScreenPage extends StatelessWidget {
   const SplashScreenPage({super.key});
 
-  Future<Widget> futureCall() async {
-    return Future.value(const HomePage());
+  @override
+  Widget build(BuildContext context) {
+    return EasySplashScreen(
+        logo: const Image(
+          image: AssetImage('assets/Logo.png'),
+        ),
+        backgroundColor: backgroundColour,
+        title: const Text(
+          "Mindful AI",
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.w700, letterSpacing: 0.7),
+        ),
+        showLoader: true,
+        loadingText: const Text(
+          "Loading...",
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w500, letterSpacing: 0.7),
+        ),
+        loadingTextPadding: const EdgeInsets.all(8),
+        loaderColor: greenColour,
+        durationInSeconds: 0,
+        navigator: const DummyWidget());
   }
+}
+
+class DummyWidget extends StatelessWidget {
+  const DummyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return EasySplashScreen(logo: 
-      const Image(image: AssetImage('assets/Logo.png'),),
-      title: const Text(
-        "Mindful AI",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      showLoader: true,
-      loadingText: const Text("Loading..."),
-    );
+    return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const HomePage();
+          } else if (snapshot.hasError) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("There was an error in logging you in!")));
+            return const LoginPage();
+          } else {
+            return const LoginPage();
+          }
+        });
   }
 }
