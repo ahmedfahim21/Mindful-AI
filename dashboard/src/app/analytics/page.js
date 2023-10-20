@@ -1,3 +1,4 @@
+'use client'
 import LineChart from "@/components/LineChart";
 import PieChart from "@/components/PieChart";
 import RadarChart from "@/components/RadarChart";

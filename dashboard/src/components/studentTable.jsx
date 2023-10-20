@@ -29,7 +29,7 @@ function StudentTable({data}) {
               <TableHead>NAME</TableHead>
               <TableHead>DEPARTMENT</TableHead>
               <TableHead>INSTITUTE</TableHead>
-              <TableHead>DOB</TableHead>
+              <TableHead>STATUS</TableHead>
               <TableHead className="text-right">ACTIONS</TableHead>
             </TableRow>
           </TableHeader>
@@ -39,7 +39,7 @@ function StudentTable({data}) {
                 <TableCell className="font-medium">{data.name}</TableCell>
                 <TableCell>{data.dept}</TableCell>
                 <TableCell>{data.institute}</TableCell>
-                <TableCell>{data.dob}</TableCell>
+                <TableCell><span className={`text-sm font-medium rounded-full px-2 py-1 ${data.status === "Good" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>{data.status}</span></TableCell>
                 <TableCell className="text-right"><Button onClick={() => viewHandler(data.uid)}>View</Button></TableCell>
               </TableRow>
             ))}
