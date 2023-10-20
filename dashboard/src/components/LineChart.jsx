@@ -10,15 +10,15 @@ function LineChart() {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
         datasets: [
           {
-            label: 'Profit',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'Heart rate',
+            data: [88, 87, 72, 75, 72, 93],
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderColor: 'rgba(255, 99, 132, 1)',
             
           },
           {
-            label: 'Total Amount',
-            data: [2, 3, 20, 5, 1, 4],
+            label: 'Student Average Heart Rate',
+            data: [72, 73, 70, 75, 71, 74],
             backgroundColor: 'rgba(54, 162, 235, 1)',
             borderColor: 'rgba(54, 162, 235, 1)',
             
