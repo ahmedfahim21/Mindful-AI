@@ -7,11 +7,11 @@ Chart.register(...registerables);
 function RadarChart() {
 
   const data = { 
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ['Video', 'Transcript', 'Audio', 'Quiz'],
     datasets: [
       {
-        label: 'Amount',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Depression Detection',
+        data: [12, 19, 3, 5],
       },
     ],
   };
