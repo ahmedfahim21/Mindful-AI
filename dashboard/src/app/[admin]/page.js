@@ -1,10 +1,10 @@
 'use client'
+import React from 'react'
 import { where, query,collection } from '@firebase/firestore'
-import { doc, getDoc, getDocs } from 'firebase/firestore'
+import { doc, getDoc, getDocs } from '@firebase/firestore'
 import { db } from '@/firebase/config'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import React from 'react'
 import StudentTable from '@/components/studentTable'
 import { Skeleton } from "@/components/ui/skeleton"
 

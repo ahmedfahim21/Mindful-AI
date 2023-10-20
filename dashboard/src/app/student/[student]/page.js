@@ -85,16 +85,14 @@ export default function Student() {
               <Skeleton className="w-40 h-5" />
               <Skeleton className="w-20 h-5" />
             </div>
-          
+            
           </div>
         )
       }
-      <hr className="w-full" />
       </div>
     <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
     </div>
-    </main>
-
+      </main>
   )
 
 
