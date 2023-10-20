@@ -37,10 +37,10 @@ export default function Student() {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; 
 
-    const dob = _dob.split("/");
-    const dobMonth = parseInt(dob[0], 10);
-    const dobDay = parseInt(dob[1], 10);
-    const dobYear = parseInt(dob[2], 10);
+    const dob = _dob.split("-");
+    const dobMonth = parseInt(dob[1], 10);
+    const dobDay = parseInt(dob[2], 10);
+    const dobYear = parseInt(dob[0], 10);
 
     let age = currentYear - dobYear;
 
@@ -75,7 +75,8 @@ export default function Student() {
                 <TableCell className="font-bold">{studentData.name}</TableCell>
                 <TableCell>{studentData.dept}</TableCell>
                 <TableCell>{studentData.institute}</TableCell>
-                <TableCell className='text-sm font-medium'>{studentData.status}</TableCell>
+                <TableCell className='font-bold'>{studentData.status}</TableCell>
+                <TableCell className='font-medium'>{studentData.gender}</TableCell>
                 <TableCell>{getAge(studentData.dob)} years</TableCell>
               </TableRow>
           </TableBody>
