@@ -30,9 +30,9 @@ function RadarChart() {
 
 
   return (
-    <>
+    <div className='w-[400px]'>
       <Radar data={data} options={options} />
-    </>
+    </div>
   )
 }
 

@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -14,6 +15,9 @@ import {
 } from "@/components/ui/tabs"
 import { Overview } from "@/components/ui/overview"
 import { RecentSales } from "@/components/ui/recent-sales"
+import { useEffect, useState } from "react"
+import { doc, getDoc, getDocs, query, where, collection } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
 
 export const metadata = {
@@ -22,6 +26,29 @@ export const metadata = {
 }
 
 export default function AnalyticsTable() {
+
+
+  const [students, setStudents] = useState([])
+  const [fetching, setFetching] = useState(false)
+  const [risky, setRisky] = useState(0)
+
+  //read
+  const read = async () => {
+
+    const q = query(collection(db, "students"));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if(doc.data().status == "Risky")
+        setRisky(risky => risky + 1)
+      setStudents(students => [...students, doc.data()])
+      setFetching(true)
+    });
+}
+
+ if(!fetching)
+    read()
+
   return (
     <>
       <div className="hidden flex-col md:flex">
@@ -30,9 +57,6 @@ export default function AnalyticsTable() {
         <div className="flex-1 spa  ce-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <div className="flex items-center space-x-2">
-              <Button>Download</Button>
-            </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
@@ -162,13 +186,13 @@ export default function AnalyticsTable() {
                 </Card>
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Recent Student Responses</CardTitle>
+                    <CardTitle>Recent Students</CardTitle>
                     <CardDescription>
-                      56 students participated this month.
+                      {risky} students out of {students.length} students at risk.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <RecentSales />
+                    <RecentSales data = {students} />
                   </CardContent>
                 </Card>
               </div>

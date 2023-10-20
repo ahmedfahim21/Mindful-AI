@@ -41,9 +41,9 @@ function LineChart() {
       };
 
   return (
-    <>
+    <div className='w-[400px]'>
       <Line data={data} options={options} />
-    </>
+    </div>
   )
 }
 
