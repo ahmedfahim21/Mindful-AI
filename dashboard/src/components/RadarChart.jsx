@@ -4,17 +4,8 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
-function RadarChart() {
+function RadarChart(data) {
 
-  const data = { 
-    labels: ['Video', 'Transcript', 'Audio', 'Quiz'],
-    datasets: [
-      {
-        label: 'Depression Detection',
-        data: [12, 19, 3, 5],
-      },
-    ],
-  };
 
   const options = {
     responsive: true,
@@ -31,7 +22,7 @@ function RadarChart() {
 
   return (
     <div className='w-[400px]'>
-      <Radar data={data} options={options} />
+      <Radar data={data.data} options={options} />
     </div>
   )
 }

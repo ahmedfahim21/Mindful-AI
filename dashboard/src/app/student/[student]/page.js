@@ -13,6 +13,8 @@ import { TableCell } from "@/components/ui/table"
 import { Table, TableBody, TableRow } from "@/components/ui/table"
 import RadarChart from "@/components/RadarChart"
 import LineChart from "@/components/LineChart"
+import { Line } from "react-chartjs-2"
+import BarChart from "@/components/BarChart"
 
 
 export default function Student() {
@@ -21,7 +23,7 @@ export default function Student() {
   // console.log(student)
 
   const [studentData, setStudentData] = useState(null)
-  const [age, setAge] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   const studentRef = doc(db, "students", student)
   // console.log(studentRef)
@@ -30,7 +32,117 @@ export default function Student() {
     const studentDoc = await getDoc(studentRef)
     console.log(studentDoc.data())
     setStudentData(studentDoc.data())
+    setLoading(false)
   }
+
+  const radar_data = (studentData) => {
+    // console.log(studentData)
+
+    const data = {
+      labels: ['Video', 'Quiz', 'Transcript', 'Audio'],
+      datasets: [
+        {
+          label: 'Student Data',
+          data: [studentData.video_score, studentData.quiz_score, studentData.transcript_score, studentData.audio_score],
+          backgroundColor: 'rgba(102, 202, 152, 0.2)',
+          borderColor: 'rgba(102, 202, 152, 1)',
+          borderWidth: 2,
+        },
+      ],
+    };
+
+    return data
+  }
+
+  const heart_data = (studentData) => {
+
+    const data = {
+
+      labels: studentData.body_vitals.map((item) => {
+        return item.created_at
+      }
+      ),
+      datasets: [
+        {
+          label: 'Heart Rate',
+          data: studentData.body_vitals.map((item) => {
+            // console.log(item)
+            return item.heartrate
+          }
+          ),
+          fill: false,
+          backgroundColor: 'rgba(255, 99, 132, 1)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          tension: 0.1,
+        },
+      ],
+    };
+
+    return data
+  }
+
+
+  const emotion_data = (studentData) => {
+
+    const data = {
+
+      labels: ["Happy", "Sad", "Angry", "Neutral", "Surprise", "Fear", "Disgust"],
+
+      datasets: [
+
+        {
+          label: 'Emotions',
+
+          data: [studentData.emotions[0], studentData.emotions[1], studentData.emotions[2], studentData.emotions[3], studentData.emotions[4], studentData.emotions[5], studentData.emotions[6]],
+
+          backgroundColor: [
+              
+              'rgba(255, 99, 132, 0.2)',
+  
+              'rgba(54, 162, 235, 0.2)',
+  
+              'rgba(255, 206, 86, 0.2)',
+  
+              'rgba(75, 192, 192, 0.2)',
+  
+              'rgba(153, 102, 255, 0.2)',
+  
+              'rgba(255, 159, 64, 0.2)',
+  
+              'rgba(255, 99, 132, 0.2)'
+  
+            ],
+
+          borderColor: [
+
+              'rgba(255, 99, 132, 1)',
+
+              'rgba(54, 162, 235, 1)',
+
+              'rgba(255, 206, 86, 1)',
+
+              'rgba(75, 192, 192, 1)',
+
+              'rgba(153, 102, 255, 1)',
+
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255, 99, 132, 1)'
+
+            ],
+          borderWidth: 1,
+        },
+      ],
+    };
+    return data
+  }
+
+
+
+
+
+
+
 
   const getAge = (_dob) => {
     const currentDate = new Date();
@@ -94,8 +206,20 @@ export default function Student() {
       }
       <hr className="w-full" />
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <RadarChart/>
-        <LineChart/>
+        {
+          loading ? ( 
+            <>Loading..</>
+          ):
+          (
+          <>
+          <RadarChart data={radar_data(studentData)}/>
+          <LineChart  data={heart_data(studentData)}/>
+          <BarChart  data={emotion_data(studentData)}/>
+          </>
+          )
+        }
+
+
       </div>
       </div>
     <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
