@@ -15,6 +15,23 @@ import RadarChart from "@/components/RadarChart"
 import LineChart from "@/components/LineChart"
 import { Line } from "react-chartjs-2"
 import BarChart from "@/components/BarChart"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 
 
 export default function Student() {
@@ -86,7 +103,7 @@ export default function Student() {
 
     const data = {
 
-      labels: ["Happy", "Sad", "Angry", "Neutral", "Surprise", "Fear", "Disgust"],
+      labels: ["Disgust", "Happy", "Sad", "Neutal", "Fear", "Angry"],
 
       datasets: [
 
@@ -137,13 +154,6 @@ export default function Student() {
     return data
   }
 
-
-
-
-
-
-
-
   const getAge = (_dob) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -172,12 +182,12 @@ export default function Student() {
 
     <main className="flex flex-col items-center justify-between p-5 overflow-y-hidden">
         <div className="flex flex-col items-center justify-center w-full h-auto">
-        <div className="absolute z-10 right-10 top-32 w-3/4 h-auto bg-white rounded-3xl p-5">
+        <div className="absolute z-10 right-10 top-32 w-3/4 h-auto bg-white rounded-3xl p-5 shadow-2xl ">
       {
         studentData ? (
-          <Table className="text-lg">
+          <Table className="text-lg w-[95%] mx-auto">
           <TableBody>
-              <TableRow key={studentData.uid} className={` px-2 py-1 ${studentData.status === "Good" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+              <TableRow key={studentData.uid} className={` px-2 py-1 border-black border-2 ${studentData.status === "Good" ? "hover:bg-green-100 hover:text-green-800" : "hover:bg-red-100 hover:text-red-800"}`}>
                 <TableCell>
                 <Avatar className="h-[50px] w-[50px] mx-4">
                   <AvatarImage src="" alt="@shadcn" />
@@ -187,7 +197,7 @@ export default function Student() {
                 <TableCell className="font-bold">{studentData.name}</TableCell>
                 <TableCell>{studentData.dept}</TableCell>
                 <TableCell>{studentData.institute}</TableCell>
-                <TableCell className='font-bold'>{studentData.status}</TableCell>
+                <TableCell><span className={`rounded-xl px-2 py-1 ${studentData.status === "Good" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>{studentData.status}</span></TableCell>
                 <TableCell className='font-medium'>{studentData.gender}</TableCell>
                 <TableCell>{getAge(studentData.dob)} years</TableCell>
               </TableRow>
@@ -212,9 +222,24 @@ export default function Student() {
           ):
           (
           <>
-          <RadarChart data={radar_data(studentData)}/>
-          <LineChart  data={heart_data(studentData)}/>
-          <BarChart  data={emotion_data(studentData)}/>
+          <Tabs defaultValue="radar" className="w-[95%]">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="radar">Overall Radar</TabsTrigger>
+            <TabsTrigger value="heartline">Heart Line</TabsTrigger>
+            <TabsTrigger value="emotions">Emotions Bar</TabsTrigger>
+            {/* <TabsTrigger value="password">Password</TabsTrigger> */}
+          </TabsList>
+          <TabsContent value="radar">
+            <RadarChart data={radar_data(studentData)}/>
+          </TabsContent>
+          <TabsContent value="heartline">
+            <LineChart  data={heart_data(studentData)}/>
+          </TabsContent>
+          <TabsContent value="emotions">
+            <BarChart  data={emotion_data(studentData)} width={1170}/>
+          </TabsContent>
+        </Tabs>
+
           </>
           )
         }
@@ -222,7 +247,7 @@ export default function Student() {
 
       </div>
       </div>
-    <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%]" />
+    <img src='/Rectangle.png' className="w-[85%] absolute right-0 top-[10%] blur-md" />
     </div>
     </main>
 

@@ -4,18 +4,10 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
-function PieChart() {
+function PieChart({data}) {
 
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Profit',
-        data: [12, 19, 3, 5, 2, 3],
-        
-      }
-    ],
-  };
+
+  console.log(data)
 
   const options = {
     responsive: true,
@@ -28,9 +20,9 @@ function PieChart() {
 
 
   return (
-    <>
+    <div className='flex mx-auto p-4 w-[500px]'>
       <Pie data={data} options={options} />
-    </>
+    </div>
   )
 }
 
