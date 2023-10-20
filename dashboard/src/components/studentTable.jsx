@@ -1,3 +1,4 @@
+'use client'
 import {
     Table,
     TableBody,
@@ -9,7 +10,6 @@ import {
   } from "@/components/ui/table"
 import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 
 
 function StudentTable({data}) {
