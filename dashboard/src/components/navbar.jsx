@@ -36,7 +36,7 @@ function Navbar() {
             <PopoverTrigger asChild>
             <Avatar className="w-[50px] h-[50px] m-1 bg-black">
               <AvatarImage src="/" />
-              <AvatarFallback>N</AvatarFallback>
+              <AvatarFallback>M</AvatarFallback>
             </Avatar>
             </PopoverTrigger>
             <PopoverContent className="w-60">

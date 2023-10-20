@@ -21,7 +21,7 @@ function RadarChart(data) {
 
 
   return (
-    <div className='w-[400px]'>
+    <div className='w-[600px] flex mx-auto p-4'>
       <Radar data={data.data} options={options} />
     </div>
   )

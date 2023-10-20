@@ -21,7 +21,7 @@ function LineChart(data) {
       };
 
   return (
-    <div className='w-[400px]'>
+    <div className='w-[1170px] flex mx-auto p-4'>
       <Line data={data.data} options={options} />
     </div>
   )
