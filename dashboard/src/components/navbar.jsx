@@ -39,7 +39,7 @@ function Navbar() {
               <AvatarFallback>N</AvatarFallback>
             </Avatar>
             </PopoverTrigger>
-            <PopoverContent className="w-80">
+            <PopoverContent className="w-60">
               <div className="grid gap-4">
                 <div className="space-y-2">
                   <h4 className="font-medium leading-none">Do you want to Logout?</h4>

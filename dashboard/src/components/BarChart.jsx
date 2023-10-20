@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
-function LineChart() {
+function BarChart() {
 
 
   const data = { 
@@ -46,4 +46,4 @@ function LineChart() {
   )
 }
 
-export default LineChart;
+export default BarChart;
