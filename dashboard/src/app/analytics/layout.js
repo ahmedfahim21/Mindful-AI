@@ -3,9 +3,9 @@ import Sidepane from "../../components/sidepane"
 
 
 export default function DashboardLayout({ children }) {
-    return (<section>
+    return (<div>
         <Navbar />
         <Sidepane />
         {children}
-        </section>)
+        </div>)
 }
