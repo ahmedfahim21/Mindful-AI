@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manipal_hackathon_mobile_app/pages/home_page.dart';
 import 'package:manipal_hackathon_mobile_app/utils/colours.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegPage extends StatefulWidget {
-  const RegPage({super.key});
+  final Function onRegComplete;
+  const RegPage({super.key, required this.onRegComplete});
 
   @override
   State<RegPage> createState() => _RegPageState();
@@ -194,12 +199,11 @@ class _RegPageState extends State<RegPage> {
                     child: Row(
                       children: [
                         Container(
-                            width: MediaQuery.of(context).size.width / 3.5,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white.withOpacity(0.7)),
                             child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(12),
                                 child: Center(
                                   child: Text(
                                     birthday,
@@ -217,7 +221,7 @@ class _RegPageState extends State<RegPage> {
                             DateTime bd = await pickBirthday(context);
                             setState(() {
                               birthday =
-                                  "${bd.day < 10 ? "0${bd.day}" : "${bd.day}"} / ${bd.month < 10 ? "0${bd.month}" : "${bd.month}"} / ${bd.year}";
+                                  "${bd.year}-${bd.month < 10 ? "0${bd.month}" : "${bd.month}"}-${bd.day < 10 ? "0${bd.day}" : "${bd.day}"}";
                             });
                           },
                           child: const Icon(
@@ -439,7 +443,30 @@ class _RegPageState extends State<RegPage> {
                           borderRadius: BorderRadius.circular(14)),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 12.0),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          CollectionReference students =
+                              FirebaseFirestore.instance.collection('students');
+                          students
+                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                              .set({
+                            'name': nameController.text,
+                            'gender': genderMale == true ? 'Male' : 'Female',
+                            'dob': birthday,
+                            'institute': selectedCollege == colleges[0] ? "MIT" : "NITK",
+                            'dept': selectedBranch,
+                          });
+
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          await pref.setBool("just_registered", false);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            SharedPreferences.getInstance().then((value) {
+                              widget.onRegComplete();
+                            });
+                          });
+                        }
+                      },
                       child: const Text(
                         "Continue",
                         style: TextStyle(color: Colors.white),
@@ -526,11 +553,7 @@ List<String> colleges = [
 
 List<String> branches = [
   "Computer Science",
-  "Information Technology",
   "Electrical Engineering",
-  "Electrical and Communication Engineering",
   "Mechanical Engineering",
-  "Chemical Engineering",
   "Civil Engineering",
-  "Material Science Engineering"
 ];

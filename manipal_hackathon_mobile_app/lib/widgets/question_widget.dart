@@ -31,7 +31,9 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+          vertical: widget.question.split('').length > 120 ? 50 : 60,
+          horizontal: 20),
       child: Column(
         children: [
           Text(
@@ -49,7 +51,16 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                   fontSize: 16,
                   color: Colors.grey[400]),
             ),
-          } else if (widget.questionNumber + 1 + 4 >= totalQuestionsNumber) ...{
+          } else if(widget.questionNumber + 1 == totalQuestionsNumber) ...{
+            Text(
+              "Finally, the last question 🥳",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Colors.grey[400]),
+            )
+          } 
+          else if (widget.questionNumber + 1 + 4 >= totalQuestionsNumber) ...{
             Text(
               "Almost there, Good Job 🙌",
               style: TextStyle(
@@ -65,10 +76,12 @@ class _QuestionWidgetState extends State<QuestionWidget> {
           ),
           Text(
             "${widget.questionEmoji} ${widget.question}",
-            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
+            style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: widget.question.split('').length > 120 ? 18 : 20),
           ),
           SizedBox(
-            height: widget.questionNumber == 0 ? 40 : 60,
+            height: widget.question.split('').length > 120 ? 30 : 40,
           ),
           Expanded(
               child: QuestionSliderWidget(

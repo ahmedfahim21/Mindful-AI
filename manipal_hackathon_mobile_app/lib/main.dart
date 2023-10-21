@@ -2,11 +2,13 @@ import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:manipal_hackathon_mobile_app/pages/dummy_routing_page.dart';
 import 'package:manipal_hackathon_mobile_app/pages/home_page.dart';
 import 'package:manipal_hackathon_mobile_app/pages/login_page.dart';
+import 'package:manipal_hackathon_mobile_app/pages/registration_page.dart';
 import 'package:manipal_hackathon_mobile_app/utils/colours.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
-import 'pages/registration_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +55,7 @@ class SplashScreenPage extends StatelessWidget {
         ),
         loadingTextPadding: const EdgeInsets.all(8),
         loaderColor: greenColour,
-        durationInSeconds: 0,
+        durationInSeconds: 2,
         navigator: const DummyWidget());
   }
 }
@@ -67,7 +69,7 @@ class DummyWidget extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const HomePage();
+              return const DummyRoutingPage();
           } else if (snapshot.hasError) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("There was an error in logging you in!")));

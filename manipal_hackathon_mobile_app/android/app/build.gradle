@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.manipal_hackathon_mobile_app"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,10 +45,11 @@ android {
         applicationId "com.example.manipal_hackathon_mobile_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 28
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -64,4 +65,10 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+    // implementation("com.google.android.gms:play-services-fitness:21.1.0")
+    // implementation("com.google.android.gms:play-services-auth:20.2.0")
+    // androidTestImplementation 'androidx.test:runner:1.1.1'
+    // androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

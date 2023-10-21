@@ -27,7 +27,7 @@ class QuestionSliderWidget extends StatefulWidget {
 }
 
 class _QuestionSliderWidgetState extends State<QuestionSliderWidget> {
-  double chosenEmoji = 3;
+  double chosenEmoji = 2;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -83,7 +83,6 @@ class _QuestionSliderWidgetState extends State<QuestionSliderWidget> {
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: widget.emotionEmojis.length,
-                  // itemExtent: MediaQuery.of(context).size.height * 0.12,
                   itemExtent: 80,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -155,10 +154,8 @@ class _QuestionSliderWidgetState extends State<QuestionSliderWidget> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 3.3,
-              ),
               RawMaterialButton(
                   elevation: 4,
                   fillColor: greenColour,
@@ -167,7 +164,7 @@ class _QuestionSliderWidgetState extends State<QuestionSliderWidget> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 30.0, vertical: 12.0),
                   onPressed: () {
-                    if (widget.questionNumber + 1 != widget.totalQuestions) {
+                    if (widget.questionNumber < widget.totalQuestions - 1) {
                       widget.updateAnswer(chosenEmoji.toInt());
                       widget.controller.nextPage();
                     } else {
