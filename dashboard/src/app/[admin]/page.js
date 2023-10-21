@@ -3,47 +3,30 @@ import React from 'react'
 import { where, query,collection } from '@firebase/firestore'
 import { doc, getDoc, getDocs } from '@firebase/firestore'
 import { db } from '@/firebase/config'
-import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import StudentTable from '@/components/studentTable'
 import { Skeleton } from "@/components/ui/skeleton"
 
 const Dashboard = () => {
 
-  const id = useParams()
-
-  const [admin, setAdmin] = useState("")
   const [students, setStudents] = useState([])
-  const [fetching, setFetching] = useState(false)
-
-  if(fetching)
-    console.log(students)
+  const [fetch, setFetch] = useState(false)
 
   //read
-  useEffect(() => {
-    const read = async () => {
-      
-      const docRef = doc(db, "admin", id.admin);
-      const docSnap = await getDoc(docRef);
+  const readAll = async () => {
 
-      if (docSnap.exists()) {
-        await setAdmin(docSnap.data().name)
-        // console.log(admin)
-        const q = query(collection(db, "students"), where("institute", "==", admin));
-        const querySnapshot = await getDocs(q);
-        // console.log(querySnapshot)
-        querySnapshot.forEach((doc) => {
-          setStudents((students) => [...students, doc.data()])
-          // console.log(doc.id, " => ", doc.data());
-        });
-        setFetching(true)
+    const q = query(collection(db, "students"));
 
-      } else {
-        console.log("No such document!");
-      }
-  }
-    read()
-  }, [admin])
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setStudents(students => [...students, doc.data()])
+      setFetch(true)
+      console.log(doc.id, " => ", doc.data());
+    });
+}
+
+ if(!fetch)
+    readAll()
 
 
 
@@ -51,10 +34,10 @@ const Dashboard = () => {
     <main className="flex flex-col items-center justify-between p-5 overflow-y-hidden">
         <div className="flex flex-col items-center justify-center w-full  overflow-y-scroll">
           <div className="absolute z-10 right-10 top-32 w-3/4 h-5/6 overflow-y-scroll bg-white rounded-3xl p-5 shadow-xl ">
-            {fetching &&
+            {fetch &&
                 <StudentTable data={students} />
             }
-            {!fetching &&
+            {!fetch &&
                 <div className="flex items-center space-x-4">
                   <Skeleton className="h-12 w-12 rounded-full" />
                   <div className="space-y-2">

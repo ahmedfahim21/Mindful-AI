@@ -236,7 +236,7 @@ export default function Student() {
           (
           <>
           <Tabs defaultValue="radar" className="w-[95%]">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="radar">Overall Radar</TabsTrigger>
             <TabsTrigger value="heartline">Heart Line</TabsTrigger>
             <TabsTrigger value="emotions">Emotions Bar</TabsTrigger>
