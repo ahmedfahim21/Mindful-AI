@@ -16,9 +16,9 @@ export default function BranchAnalysis(students) {
     const countDept = (students) => {
         const deptCounts = {}
         students.data.forEach((student) => {
-            if(student.dept in deptCounts)
+            if(student.dept in deptCounts && student.status == "Risky")
                 deptCounts[student.dept] += 1
-            else
+            else if( student.status == "Risky")
                 deptCounts[student.dept] = 1
         })
 

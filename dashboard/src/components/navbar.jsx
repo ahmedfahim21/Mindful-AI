@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import Link from "next/link";
 import { useRouter } from "next/navigation"
 
 function Navbar() {
@@ -23,9 +24,10 @@ function Navbar() {
 
     return (
       <div className="z-10 w-full font-mada text-xl mx-auto p-5 top-0 flow-root">
+        <Link href="/" className="pointer-cursor">
           <img src="/logo.png" className="h-[50px] w-[50px] mx-5 float-left" />
           <p className="text-2xl my-2 float-left">MINDFUL AI DASHBOARD</p>
-  
+        </Link>
           <div className="float-right flex">
           <div className=" left-10 w-[500px] h-[50px] my-1 rounded-md bg-white border-gray border-2"></div>
           <div className="w-[50px] p-2 h-[50px] my-1 rounded-md bg-primary mx-2 "><img src='/search.png'/></div>
