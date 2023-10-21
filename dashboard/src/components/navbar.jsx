@@ -29,8 +29,8 @@ function Navbar() {
           <p className="text-2xl my-2 float-left">MINDFUL AI DASHBOARD</p>
         </Link>
           <div className="float-right flex">
-          <div className=" left-10 w-[500px] h-[50px] my-1 rounded-md bg-white border-gray border-2"></div>
-          <div className="w-[50px] p-2 h-[50px] my-1 rounded-md bg-primary mx-2 "><img src='/search.png'/></div>
+          {/* <div className=" left-10 w-[500px] h-[50px] my-1 rounded-md bg-white border-gray border-2"></div> */}
+          {/* <div className="w-[50px] p-2 h-[50px] my-1 rounded-md bg-primary mx-2 "><img src='/search.png'/></div> */}
           
           
 

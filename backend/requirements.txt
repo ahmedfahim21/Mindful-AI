@@ -1,0 +1,15 @@
+Flask
+moviepy
+firebase-admin
+transformers
+torch
+SpeechRecognition
+tensorflow
+numpy
+pandas
+scikit-learn
+pydub
+opencv-python
+keras
+joblib
+librosa
