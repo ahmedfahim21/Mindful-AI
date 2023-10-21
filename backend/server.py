@@ -101,19 +101,18 @@ def download_video():
     # # add the two arrays
     audio_emotions = [(a * 0.6)+(b * 0.4) for a, b in zip(audio_emotions, video_emotions)]
 
-    # # round to nearest integer
-    # audio_emotions = [round(x) for x in audio_emotions]
 
     print(audio_emotions)
 
     audio_score = statistics.mean(audio_emotions) * 100
     video_score = statistics.mean(video_emotions) * 100
 
+    # round to nearest integer
+    audio_emotions = [round(x * 100) for x in audio_emotions]
 
     #audio wave prediction
     wavPrediction = depression_model_using_wav_audio.depression_model_using_wav_audio(destination_file_name[:-4] + ".wav")
     print("wavPrediction : ",wavPrediction)
-
 
     # # upload the result to firebase
     db = firestore.client()
@@ -134,7 +133,6 @@ def download_video():
     doc_ref.update({
         u'wave_score': wavPrediction,
     })
-
 
     # predict depression
     audio_file = destination_file_name[:-4] + ".wav"
