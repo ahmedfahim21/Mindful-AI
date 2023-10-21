@@ -54,13 +54,17 @@ export default function Student() {
 
   const radar_data = (studentData) => {
     // console.log(studentData)
+    if(studentData?.video_score == undefined){
+      console.log("No Data")
+      return null
+    }
 
     const data = {
       labels: ['Video', 'Quiz', 'Transcript', 'Audio'],
       datasets: [
         {
           label: 'Student Data',
-          data: [studentData.video_score, studentData.quiz_score, studentData.transcript_score, studentData.audio_score],
+          data: [studentData.video_score, studentData.scores.Anxiety.Score, studentData.transcript_score, studentData.audio_score],
           backgroundColor: 'rgba(102, 202, 152, 0.2)',
           borderColor: 'rgba(102, 202, 152, 1)',
           borderWidth: 2,
@@ -72,6 +76,11 @@ export default function Student() {
   }
 
   const heart_data = (studentData) => {
+
+    if(studentData?.body_vitals == undefined){
+      console.log("No Data")
+      return null
+    }
 
     const data = {
 
@@ -101,6 +110,10 @@ export default function Student() {
 
   const emotion_data = (studentData) => {
 
+    if(studentData?.emotions == undefined){
+      console.log("No Data")
+      return null
+    }
     const data = {
 
       labels: ["Disgust", "Happy", "Sad", "Neutal", "Fear", "Angry"],
@@ -227,16 +240,54 @@ export default function Student() {
             <TabsTrigger value="radar">Overall Radar</TabsTrigger>
             <TabsTrigger value="heartline">Heart Line</TabsTrigger>
             <TabsTrigger value="emotions">Emotions Bar</TabsTrigger>
-            {/* <TabsTrigger value="password">Password</TabsTrigger> */}
           </TabsList>
           <TabsContent value="radar">
-            <RadarChart data={radar_data(studentData)}/>
+            {
+              radar_data(studentData) ? (
+                <RadarChart data={radar_data(studentData)} />
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="w-20 h-20 rounded-full" />
+                  <div className="flex flex-col items-start justify-center space-y-2">
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5" />
+                  </div>
+                
+                </div>
+              )
+            }
           </TabsContent>
           <TabsContent value="heartline">
-            <LineChart  data={heart_data(studentData)}/>
+          {
+              heart_data(studentData) ? (
+                <LineChart data={heart_data(studentData)} />
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="w-20 h-20 rounded-full" />
+                  <div className="flex flex-col items-start justify-center space-y-2">
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5" />
+                  </div>
+                
+                </div>
+              )
+            }
           </TabsContent>
           <TabsContent value="emotions">
-            <BarChart  data={emotion_data(studentData)} width={1170}/>
+            {
+              emotion_data(studentData) ? (
+                <BarChart data={emotion_data(studentData)} />
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="w-20 h-20 rounded-full" />
+                  <div className="flex flex-col items-start justify-center space-y-2">
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5" />
+                  </div>
+                
+                </div>
+              )
+            }
           </TabsContent>
         </Tabs>
 

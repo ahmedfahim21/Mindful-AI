@@ -24,10 +24,6 @@ import GenderAnalysis from "./GenderAnalysis"
 import AgeAnalysis from "./AgeAnalysis"
 
 
-export const metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-}
 
 export default function AnalyticsTable() {
 
@@ -47,6 +43,7 @@ export default function AnalyticsTable() {
         setRisky(risky => risky + 1)
       setStudents(students => [...students, doc.data()])
       setFetching(true)
+      console.log(doc.id, " => ", doc.data());
     });
 }
 
