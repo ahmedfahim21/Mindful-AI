@@ -1,26 +1,23 @@
+
+import sys
 from moviepy.editor import VideoFileClip
 from Text_analysis import predict_depression
-import json
 import os
-from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
-import firebase_admin
+import statistics
+sys.path.insert(1, 'emotion_model_using_wav_audio/')
+sys.path.insert(2, 'emotion_model_using_video/')
+sys.path.insert(3, 'emotion_model_using_wave_audio/')
+from emotion_model_using_wav_audio import emotion_model_using_wav_audio
+from emotion_model_using_video import emotion_model_using_video
+from depression_model_using_wav_audio import depression_model_using_wav_audio
+from flask import Flask, flash, request
 from firebase_admin import credentials
 from firebase_admin import storage
 from firebase_admin import firestore
-import datetime
-
-import urllib.request as req
-import cv2
 from firebase_admin import credentials, initialize_app, storage
 # some_file.py
-import sys
 # caution: path[0] is reserved for script path (or '' in REPL)
-sys.path.insert(1, 'emotion_model_using_wav_audio/')
-sys.path.insert(2, 'emotion_model_using_video/')
 
-from emotion_model_using_wav_audio import emotion_model_using_wav_audio
-from emotion_model_using_video import emotion_model_using_video
 
 
 cred = credentials.Certificate(
@@ -35,7 +32,6 @@ def convert_video_to_audio_moviepy(video_file, output_ext="wav"):
     filename, ext = os.path.splitext(video_file)
     clip = VideoFileClip(video_file)
     clip.audio.write_audiofile(f"{filename}.{output_ext}")
-
 
 # set secret key
 app = Flask(__name__)
@@ -61,13 +57,18 @@ def download_video():
     res = emotion_model_using_wav_audio(destination_file_name[:-4] + ".wav")
     print(res)
     # convert float to int
-    audio_emotions = {key: int(value*100) for key, value in res.items()}
+    audio_emotions = {key: (value) for key, value in res.items()}
 
-    # make an array of the values
-    audio_emotions = list(audio_emotions.values())
+    # {'disgust': 0.91542405, 'happy': 0.05960697, 'sad': 7.4444124e-08,
+    #     'neutral': 0.024968872, 'fear': 1.7846921e-09, 'angry': 1.2755274e-13}
 
-    audio_weights = [5, 1, 7, 5, 6, 6]
-    audio_weights = [x/sum(audio_weights) for x in audio_weights]
+    audio_emotions = [audio_emotions['angry'], audio_emotions['disgust'], audio_emotions['fear'],
+                      audio_emotions['happy'], audio_emotions['neutral'], audio_emotions['sad'],0]
+
+    # audio_weights = [5, 1, 7, 5, 6, 6, 0]
+    audio_weights = [6, 5, 7, 1, 3, 7, 0]
+    audio_sum = sum(audio_weights)
+    audio_weights = [x/audio_sum for x in audio_weights]
     # multiply the values by the weights
     audio_emotions = [a*b for a, b in zip(audio_emotions, audio_weights)]
     print(audio_emotions)
@@ -76,29 +77,45 @@ def download_video():
     res = res["average_emotions"]
     print(res)
 
-    video_emotions = {key: int(value*100) for key, value in res.items()}
+    video_res = {key: (value) for key, value in res.items()}
+
+    print(video_res)
+
+    # {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+
+    video_emotions = [video_res['Angry'], video_res['Disgusted'], video_res['Fearful'],
+                      video_res['Happy'], video_res['Neutral'], video_res['Sad'], video_res['Surprised']]
 
     print(video_emotions)
+
+    video_weights = [0.205, 0.176, 0.176, 0.029, 0.147, 0.205, 0.058]
     
-    video_emotions = list(video_emotions.values())
+    print(video_weights)
 
-    video_weights = [7, 6, 6, 1, 5, 2]
+    video_emotions_final = []
+    for i in range(7):
+        video_emotions_final.append(video_emotions[i]*video_weights[i])
 
-    video_weights = [x/sum(video_weights) for x in video_weights]
-    video_emotions = [a*b for a, b in zip(video_emotions, video_weights)]
+    print(video_emotions_final)
 
-    # add the two arrays
-    audio_emotions = [a+b for a, b in zip(audio_emotions, video_emotions)]
+    # # add the two arrays
+    audio_emotions = [(a * 0.6)+(b * 0.4) for a, b in zip(audio_emotions, video_emotions)]
 
-    #round to nearest integer
-    audio_emotions = [round(x) for x in audio_emotions]
+    # # round to nearest integer
+    # audio_emotions = [round(x) for x in audio_emotions]
 
     print(audio_emotions)
 
-    audio_score = sum(audio_emotions)
-    video_score = sum(video_emotions)
+    audio_score = statistics.mean(audio_emotions) * 100
+    video_score = statistics.mean(video_emotions) * 100
 
-    # upload the result to firebase
+
+    #audio wave prediction
+    wavPrediction = depression_model_using_wav_audio.depression_model_using_wav_audio(destination_file_name[:-4] + ".wav")
+    print("wavPrediction : ",wavPrediction)
+
+
+    # # upload the result to firebase
     db = firestore.client()
     # update the emotion field of the document
     doc_ref = db.collection(u'students').document(user_id)
@@ -114,19 +131,36 @@ def download_video():
         u'video_score': video_score,
     })
 
+    doc_ref.update({
+        u'wave_score': wavPrediction,
+    })
+
+
     # predict depression
     audio_file = destination_file_name[:-4] + ".wav"
-	# Predict the depression level based on the transcript
-    label, score = predict_depression(audio_file)    
+    # Predict the depression level based on the transcript
+    label, score = predict_depression(audio_file)
     if label == "Depressed":
         doc_ref.update({
-            u'depression': round(score * 100),
+            u'transcript_score': round(score * 100),
         })
     else:
         doc_ref.update({
-            u'depression': 100 - round(score * 100),
+            u'transcript_score': 100 - round(score * 100),
+        })
+
+    if label == "Depressed" and score > 0.5:
+        doc_ref.update({
+            u'status': 'Risky',
+        })
+    else:
+        doc_ref.update({
+            u'status': 'Healthy',
         })
 
     # Return the result
     return "success"
 
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')

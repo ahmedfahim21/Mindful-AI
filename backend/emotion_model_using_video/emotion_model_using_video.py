@@ -10,6 +10,9 @@ num_emotions = 7
 emotion_model_json_path = r'D:\coding\hackathon\Mindful-AI\backend\emotion_model_using_video\emotion_model.json'
 emotion_model_path = r'D:\coding\hackathon\Mindful-AI\backend\emotion_model_using_video\emotion_model.h5'
 haarcascade_frontalface_path = r'D:\coding\hackathon\Mindful-AI\backend\emotion_model_using_video\haarcascade_frontalface_default.xml'
+# emotion_model_json_path = r'emotion_model.json'
+# emotion_model_path = r'emotion_model.h5'
+# haarcascade_frontalface_path = r'haarcascade_frontalface_default.xml'
 
 def emotion_model_using_video(file_path,desired_fps=10):    
 

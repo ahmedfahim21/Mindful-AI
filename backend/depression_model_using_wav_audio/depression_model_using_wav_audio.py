@@ -1,20 +1,17 @@
 import pandas as pd
 import numpy as np
 import joblib
-import os
 import librosa
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 import keras
-
-model_path = r'D:\coding\hackathon\Mindful-AI\backend\emotion_model_using_wav_audio\emotion_model_using_wav_audio.h5'  
-path_of_scaler_filename=r'D:\coding\hackathon\Mindful-AI\backend\emotion_model_using_wav_audio\scaler_filename.pkl'
-
-# model_path = r'emotion_model_using_wav_audio.h5'
-# path_of_scaler_filename=r'scaler_filename.pkl'
+model_path_json = r'D:\coding\hackathon\Mindful-AI\backend\depression_model_using_wav_audio\depression_model_using_wav_audio.json'  
+model_path = r'D:\coding\hackathon\Mindful-AI\backend\depression_model_using_wav_audio\depression_model_using_wav_audio.h5'  
+path_of_wav_audio_file=r'D:\coding\hackathon\Mindful-AI\backend\downloads\video.wav'
+path_of_scaler_filename=r'D:\coding\hackathon\Mindful-AI\backend\depression_model_using_wav_audio\scaler_filename_dep.pkl'
 
 
-def emotion_model_using_wav_audio(path):
+def depression_model_using_wav_audio(path):
   def noise(data):
     noise_amp = 0.035*np.random.uniform()*np.amax(data)
     data = data + noise_amp*np.random.normal(size=data.shape[0])
@@ -79,30 +76,36 @@ def emotion_model_using_wav_audio(path):
       return result
 
   X= []
-  feature = get_features(path)
-  for ele in feature:
-      X.append(ele)
+  features = get_features(path)
 
+  for feature in features:
+      X.append(feature)
   Features = pd.DataFrame(X)
   scaler = joblib.load(path_of_scaler_filename)
   x_test = scaler.transform(Features)
   x_test = np.expand_dims(x_test, axis=2) 
-  model = load_model(model_path)
+
+  from keras.models import model_from_json
+  with open(model_path_json, "r") as json_file:
+      model_json = json_file.read()
+  model = model_from_json(model_json)
+  model.load_weights(model_path)
+  
   pred_test = model.predict(x_test)
-  emotions = ['disgust','happy','sad', 'neutral' ,'fear','angry']
+  Threshold=0.29
+  if(pred_test[0]>= Threshold):
+      return 1
+  else:
+      return 0
+      
 
-  mean_probabilities = np.mean(pred_test, axis=0)
-
-  average_emotion_probabilities = dict(zip(emotions, mean_probabilities))
-
-  return average_emotion_probabilities
 
 
-#convert to path /downloads/video.wav
-# path_name = os.path.join("downloads", "video.wav")
 
-# res = emotion_model_using_wav_audio(r"D:\coding\hackathon\Mindful-AI\backend\downloads\video.wav")
-# print(res)
+res = depression_model_using_wav_audio(path_of_wav_audio_file)
+print(res)
+    
+
 
 
 

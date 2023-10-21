@@ -1,4 +1,5 @@
 audio_file=r"D:\coding\hackathon\Mindful-AI\backend\downloads\video.wav"
+# audio_file=r"downloads/video.wav"
 
 import speech_recognition as sr
 from transformers import pipeline
@@ -20,7 +21,7 @@ def transcribe_audio(audio_file):
         transcribed_text = recognizer.recognize_google(audio_data)
         return transcribed_text
     except sr.UnknownValueError:
-        print("Google Web Speech API could not understand the audio.")
+        print("Speech API could not understand the audio.")
         return ""
     except sr.RequestError as e:
         print("Could not request results from Google Web Speech API; {0}".format(e))
@@ -36,7 +37,8 @@ def predict_depression(audio_file):
     Function to make a prediction on the provided transcript.
     """
     transcript= transcribe_audio(audio_file)
-    
+    if(transcript == ""):
+        return "Depressed",0
     # Make a prediction
     results = classifier(transcript)
 
