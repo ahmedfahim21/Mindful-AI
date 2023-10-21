@@ -90,6 +90,9 @@ def download_video():
     # add the two arrays
     audio_emotions = [a+b for a, b in zip(audio_emotions, video_emotions)]
 
+    #round to nearest integer
+    audio_emotions = [round(x) for x in audio_emotions]
+
     print(audio_emotions)
 
     audio_score = sum(audio_emotions)
