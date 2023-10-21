@@ -16,9 +16,9 @@ export default function GenderAnalysis(students) {
     const countGen = (students) => {
         const genders = [0,0]
         students.data.forEach((student) => {
-            if(student.gender == "Male")
+            if(student.gender == "Male" && student.status == "Risky")
                 genders[0] += 1
-            else if(student.gender == "Female")
+            else if(student.gender == "Female" && student.status == "Risky")
                 genders[1] += 1
         })
 
@@ -51,7 +51,7 @@ export default function GenderAnalysis(students) {
   return (
     <>
 
-                <Card className="w-full">
+                <Card className="w-full p-10">
                     <PieChart data={gdata} />
                 </Card>
     </>

@@ -34,7 +34,7 @@ export default function AgeAnalysis(students) {
     const countAge = (students) => {
         const ageCounts = {"16-18" : 0, "19-21" : 0, "22-24" : 0, "25-27" : 0, "28-30" : 0}
         students.data.forEach((student) => {
-            if(student.dob != null){
+            if(student.dob != null && student.status == "Risky"){
                 
                 student.age = getAge(student.dob)
                 if(student.age <= 18)

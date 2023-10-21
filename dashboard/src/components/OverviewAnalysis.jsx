@@ -23,9 +23,9 @@ export default function OverviewAnalytics(students) {
         let sum = 0
         let count = 0
         students.data.forEach((student) => {
-            if(student.quiz_score != null)
+            if(student.scores != null)
             {
-            sum += student.quiz_score
+            sum += student.scores.Anxiety.Score
             count += 1
             }
         })
@@ -49,8 +49,18 @@ export default function OverviewAnalytics(students) {
     }
 
     const avgMood = (students) => {
+        let sum = 0
+        let count = 0
+        students.data.forEach((student) => {
+            if(student.depression != null)
+            {
+                  sum += student.depression
+                  count += 1
 
-        return 0
+            }
+        }
+        )
+        return sum/count
     }
 
     const countRisky = (students) => {
