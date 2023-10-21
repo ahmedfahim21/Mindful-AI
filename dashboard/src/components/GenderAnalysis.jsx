@@ -28,7 +28,7 @@ export default function GenderAnalysis(students) {
     console.log(countGen(students))
 
     const gdata = {
-        labels: ["male", "female"],
+        labels: ["Male", "Female"],
         datasets: [
           {
             label: 'No of risky students',
