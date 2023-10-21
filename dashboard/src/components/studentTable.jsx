@@ -34,8 +34,8 @@ function StudentTable({data}) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((data) => (
-              <TableRow key={data.uid}>
+            {data.map((data, index) => (
+              <TableRow key={index}>
                 <TableCell className="font-medium">{data.name}</TableCell>
                 <TableCell>{data.dept}</TableCell>
                 <TableCell>{data.institute}</TableCell>
