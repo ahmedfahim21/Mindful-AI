@@ -26,7 +26,7 @@ function Navbar() {
       <div className="z-10 w-full font-mada text-xl mx-auto p-5 top-0 flow-root">
         <Link href="/" className="pointer-cursor">
           <img src="/logo.png" className="h-[50px] w-[50px] mx-5 float-left" />
-          <p className="text-2xl my-2 float-left">MINDFUL AI DASHBOARD</p>
+          <p className="text-2xl my-2 float-left">MINDFUL AI DASHBOARD by </p><p className="text-3xl my-2 float-left text-primary font-bold">( TEAM "JUST NOT IDEAS" )</p>
         </Link>
           <div className="float-right flex">
           {/* <div className=" left-10 w-[500px] h-[50px] my-1 rounded-md bg-white border-gray border-2"></div> */}
