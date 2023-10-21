@@ -107,12 +107,15 @@ def download_video():
     audio_score = statistics.mean(audio_emotions) * 100
     video_score = statistics.mean(video_emotions) * 100
 
+
     # round to nearest integer
     audio_emotions = [round(x * 100) for x in audio_emotions]
 
     #audio wave prediction
     wavPrediction = depression_model_using_wav_audio.depression_model_using_wav_audio(destination_file_name[:-4] + ".wav")
     print("wavPrediction : ",wavPrediction)
+    emo_score = audio_score * 0.6 + video_score * 0.4
+
 
     # # upload the result to firebase
     db = firestore.client()
@@ -155,6 +158,14 @@ def download_video():
         doc_ref.update({
             u'status': 'Healthy',
         })
+
+
+    depression = emo_score * 0.4 + score * 0.6
+    print("depression : ",depression)
+
+    doc_ref.update({
+        u'depression': depression,
+    })
 
     # Return the result
     return "success"

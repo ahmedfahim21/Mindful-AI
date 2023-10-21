@@ -5,7 +5,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid'
 const addUsers = async () => {
   const users = [];
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 40; i++) {
     // Generate a random year between 1995 and 2005
     const randomYear = 1995 + Math.floor(Math.random() * 11);
     // Generate a random month and day (for simplicity, we use January 1st for the day)
@@ -27,33 +27,56 @@ const addUsers = async () => {
       }
 
       return emotions;
+    }
 
+    const generateBodyData = () => {
+      const bodyData = [];
+      for (let i = 0; i <= 10; i++) {
+        const randomDate = new Date(+(new Date()) - Math.floor(Math.random() * 10000));
+        bodyData.push({
+          created_at: randomDate.toISOString().slice(0, 10),
+          step_count: Math.floor(Math.random() * 10000),
+          heartrate: Math.floor(Math.random() * 60) + 60,
+          sleep: Math.floor(Math.random() * 10),
+        })
+      }
 
+      return bodyData;
+    }
+
+    const getQuizScore = () => {
+      const scores = {
+        Anxiety: {
+          Score: Math.floor(Math.random() * 40),
+        }
+      }
+      return scores
     }
 
 
 
+
     //uuid of size 6
-    const user = {
-      uid: uuidv4().slice(0, 6),
+    let user = {
+      uid: uuidv4(),
       name: `Student_${i}`,
       institute: 'MIT',
       dept: departments[Math.floor(Math.random() * 4)],
       gender: i % 2 === 0 ? 'Male' : 'Female',
       dob: `${randomYear}-${String(randomMonth).padStart(2, '0')}-${String(randomDay).padStart(2, '0')}`,
-      body_vitals: [{
-        created_at: new Date().toISOString(),
-        step_count: Math.floor(Math.random() * 10000),
-        heartrate: Math.floor(Math.random() * 100) + 60,
-        sleep: Math.floor(Math.random() * 10),
-      }],
-      status: conditions[Math.floor(Math.random() * 2)],
+      body_vitals: generateBodyData(),
       video_score: Math.floor(Math.random() * 100),
-      quiz_score: Math.floor(Math.random() * 100),
+      scores: getQuizScore(),
       audio_score: Math.floor(Math.random() * 100),
       transcript_score: Math.floor(Math.random() * 100),
+      wave_score: Math.floor(Math.random() * 100) > 70 ? 1 : 0,
       emotions: generateEmotions(),
     };
+
+    user.depression = Math.floor(Math.random() * 100);
+    
+    user.status = user.depression > 70 ? "Risky" : "Good";
+
     users.push(user);
   }
 
