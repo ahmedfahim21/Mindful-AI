@@ -26,7 +26,8 @@ A comprehensive mental onset detection system tailored for the needs of universi
 ## System Diagrams
 
 - Overall
-  ![image](https://github.com/ahmedfahim21/Mindful-AI/assets/99824146/d5dcf76a-cefc-4d7e-bc9e-75ab3293ce33)
+![MindFulAI_Arch](https://github.com/ahmedfahim21/Mindful-AI/assets/108116233/fe465370-49fa-4d81-8115-5dae2663ef29)
+
 
 
 ## App
