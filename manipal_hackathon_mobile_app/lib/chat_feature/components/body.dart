@@ -1,15 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:manipal_hackathon_mobile_app/chat_feature/chat_message_class.dart';
 import 'package:manipal_hackathon_mobile_app/chat_feature/constants.dart';
 import 'package:manipal_hackathon_mobile_app/utils/colours.dart';
-import 'dart:convert';
 import 'message.dart';
 
-const OPEN_AI_API_KEY = "";
+const GEMINI_API_KEY = "";
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -28,14 +24,22 @@ class _BodyState extends State<Body> {
       List<ChatMessage> messages) {
     final temp = messages.map((message) {
       return {
-        'role': message.isSender ? 'user' : 'assistant',
-        'content': message.text,
+        'role': message.isSender ? 'user' : 'model',
+        'parts': [
+          {
+            'text': message.text,
+          }
+        ]
       };
     }).toList();
     temp.insert(0, {
       'role': 'system',
-      'content':
-          "You are a friend of a college going student, just talk to him like a friend or companion and listen to all his talks, console him if necessary and don't reply like a bot. Keep your messages crisp and short, max 100",
+      'parts': [
+        {
+          'text':
+              "You are a friend of a college going student, just talk to him like a friend or companion and listen to all his talks, console him if necessary and don't reply like a bot. Keep your messages crisp and short, max 100. Pleae don't reply like a Bot, don't say u r an AI",
+        }
+      ]
     });
     return temp;
   }
@@ -60,31 +64,28 @@ class _BodyState extends State<Body> {
       waiting = true;
       messages.add(const ChatMessage(isSender: false, text: ''));
     });
-    String apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+    String apiUrl =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
     String serverResponse = "";
     Map<String, dynamic> jsonPayload = {
-      "model": "gpt-3.5-turbo",
-      "messages": chatMessagesToJsonList(messages)
+      "contents": chatMessagesToJsonList(messages),
+      "generationConfig": {"temperature": 0.3, "maxOutputTokens": 600}
     };
-
-    print("JSON payload OPEN_AI API: $jsonPayload");
 
     final url = Uri.parse(apiUrl);
 
-    // final response = await http.post(url,
-    //     headers: {'Authorization': 'Bearer $OPEN_AI_API_KEY'},
-    //     body: jsonPayload);
     final response = await Dio().postUri(url,
         data: jsonPayload,
         options: Options(
-          headers: {'Authorization': 'Bearer $OPEN_AI_API_KEY'},
+          headers: {'Authorization': 'Bearer $GEMINI_API_KEY'},
         ));
 
     if (response.statusCode == 200) {
       // Request was successful
       serverResponse =
           response.data["choices"][0]["message"]["content"].toString();
-      print('Response data: ${serverResponse}');
+      print('Response data: $serverResponse}');
     } else {
       // Request failed
       print('Request failed with status: ${response.statusCode}');
