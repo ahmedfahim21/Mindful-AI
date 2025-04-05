@@ -1,5 +1,5 @@
 Flask
-moviepy
+moviepy==1.0.3
 firebase-admin
 transformers
 torch
